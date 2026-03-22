@@ -5,7 +5,7 @@ Paste a chair product URL and get:
 - Ergonomic score (1-10 + Red/Yellow/Green)
 - 3-4 explanation bullets
 - Practical body-impact explanation
-- 1-2 better alternatives when score <= 7
+- 1-2 better alternatives aligned to your budget
 
 ## Quick start
 

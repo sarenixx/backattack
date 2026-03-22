@@ -21,6 +21,7 @@ After this change, a user can paste a chair product URL into a web form and rece
 - [x] (2026-03-22 01:07Z) Added MVP analytics instrumentation (page view, analyze click/success/fail, share-copy click) and in-memory event collector endpoint.
 - [x] (2026-03-22 01:18Z) Added `/dashboard` analytics view with counts, conversion rates, and recent events.
 - [x] (2026-03-22 01:28Z) Expanded landing page into a full product narrative (hero, value bullets, how-it-works, outcomes) while preserving analyzer flow.
+- [x] (2026-03-22 01:56Z) Updated recommendation behavior to always return 1-2 budget-aligned alternatives, regardless of score.
 
 ## Surprises & Discoveries
 
@@ -34,6 +35,8 @@ After this change, a user can paste a chair product URL into a web form and rece
   Evidence: `/dashboard` computes and displays analyze->success, success->share, and analyze->share conversion rates.
 - Observation: The minimal form-only landing made value proposition unclear; expanding narrative sections improves first-visit comprehension.
   Evidence: New homepage now includes explicit sections for process and outcomes before/alongside input form.
+- Observation: Users want alternatives even for high-scoring chairs to compare options within budget.
+  Evidence: Product-direction feedback requested always-on recommendations.
 
 ## Decision Log
 
@@ -58,10 +61,13 @@ After this change, a user can paste a chair product URL into a web form and rece
 - Decision: Keep analysis form above the fold but add supporting sections below it.
   Rationale: Preserves low-friction action while improving message clarity and conversion context.
   Date/Author: 2026-03-22 / Codex
+- Decision: Always show 1-2 recommendations instead of gating by low scores.
+  Rationale: Better user utility and stronger comparison workflow, while still budget-constraining outputs.
+  Date/Author: 2026-03-22 / Codex
 
 ## Outcomes & Retrospective
 
-The repo now contains a deployable web MVP matching the requested launch shape: paste URL, get score and targeted explanation, then 1-2 better options. It now also has a more complete landing-page narrative, a shareable card with one-click copy text output, and a built-in analytics dashboard for funnel visibility. Remaining gaps: URL extraction is best-effort and analytics storage is process-memory only.
+The repo now contains a deployable web MVP matching the requested launch shape: paste URL, get score and targeted explanation, and always receive 1-2 budget-aligned chair recommendations. It now also has a more complete landing-page narrative, a shareable card with one-click copy text output, and a built-in analytics dashboard for funnel visibility. Remaining gaps: URL extraction is best-effort and analytics storage is process-memory only.
 
 ## Context and Orientation
 
@@ -117,6 +123,7 @@ Acceptance is met when:
 - Response includes clear “why this affects your body” explanation bullets.
 - Score follows Red/Yellow/Green mapping from 1-10 range.
 - If score <= 7, 1-2 alternatives are shown.
+- 1-2 alternatives are always shown and budget-aligned when possible.
 - Analytics events are emitted for page view, analyze click, analyze success/fail, and copy-share action.
 - `/dashboard` shows funnel conversion from `analyze_click` to `analyze_success` to `copy_share_click`.
 - Landing page communicates product value beyond only URL input.
@@ -155,3 +162,4 @@ Revision note (2026-03-22): Added the lightweight shareable-card feature and rec
 Revision note (2026-03-22): Added first-pass analytics instrumentation and in-memory event collector endpoint for funnel visibility.
 Revision note (2026-03-22): Added `/dashboard` funnel view for rapid launch feedback without external analytics tooling.
 Revision note (2026-03-22): Expanded landing page content structure to improve first-visit clarity and conversion readiness.
+Revision note (2026-03-22): Changed recommendation policy to always provide 1-2 budget-aligned alternatives.

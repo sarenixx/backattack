@@ -137,38 +137,34 @@ function fallbackEvaluate(
 
   score = Math.max(1, Math.min(10, Number(score.toFixed(1))));
 
-  const alternatives: Alternative[] = [];
-  if (score <= 7) {
-    const options: Alternative[] = [
-      {
-        name: "SIHOO M57",
-        priceEstimate: "$299",
-        whyBetter:
-          "Adjustable lumbar, mesh back, and stronger tilt/recline controls improve spinal support and long-session comfort.",
-      },
-      {
-        name: "Branch Ergonomic Chair",
-        priceEstimate: "$359",
-        whyBetter:
-          "Higher adjustability and dynamic back support help reduce static lower-back loading.",
-      },
-      {
-        name: "HON Ignition 2.0",
-        priceEstimate: "$430",
-        whyBetter:
-          "Better seat/lumbar tuning and denser cushioning improve posture sustainability.",
-      },
-    ];
+  const options: Alternative[] = [
+    {
+      name: "SIHOO M57",
+      priceEstimate: "$299",
+      whyBetter:
+        "Adjustable lumbar, mesh back, and stronger tilt/recline controls improve spinal support and long-session comfort.",
+    },
+    {
+      name: "Branch Ergonomic Chair",
+      priceEstimate: "$359",
+      whyBetter:
+        "Higher adjustability and dynamic back support help reduce static lower-back loading.",
+    },
+    {
+      name: "HON Ignition 2.0",
+      priceEstimate: "$430",
+      whyBetter:
+        "Better seat/lumbar tuning and denser cushioning improve posture sustainability.",
+    },
+  ];
 
-    const inBudget = options.filter((opt) => {
-      const n = Number(opt.priceEstimate.replace(/[^\d]/g, ""));
-      if (budgetMin && n < budgetMin) return false;
-      if (budgetMax && n > budgetMax) return false;
-      return true;
-    });
-
-    alternatives.push(...(inBudget.length > 0 ? inBudget : options).slice(0, 2));
-  }
+  const inBudget = options.filter((opt) => {
+    const n = Number(opt.priceEstimate.replace(/[^\d]/g, ""));
+    if (budgetMin && n < budgetMin) return false;
+    if (budgetMax && n > budgetMax) return false;
+    return true;
+  });
+  const alternatives = (inBudget.length > 0 ? inBudget : options).slice(0, 2);
 
   return {
     chairSummary: `${product.title} (${product.priceText})`,
@@ -226,7 +222,7 @@ Rules:
 - Focus on practical cause -> effect reasoning for back health.
 - Keep explanation concrete, not generic.
 - Score scale: 1-4 Red, 5-7 Yellow, 8-10 Green.
-- If score <= 7, return exactly 1-2 better alternatives; include value options, not only premium brands.
+- Always return exactly 1-2 better alternatives; include value options, not only premium brands.
 - Alternatives should prefer the budget when provided.
 - Avoid medical diagnosis language; ergonomic guidance only.
 
@@ -254,10 +250,9 @@ Return JSON with this exact schema:
 
   parsed.score = Math.max(1, Math.min(10, Number(parsed.score.toFixed(1))));
   parsed.scoreBand = band(parsed.score);
-  if (parsed.score > 7) {
-    parsed.alternatives = [];
-  } else {
-    parsed.alternatives = (parsed.alternatives || []).slice(0, 2);
+  parsed.alternatives = (parsed.alternatives || []).slice(0, 2);
+  if (parsed.alternatives.length === 0) {
+    parsed.alternatives = fallbackEvaluate(product, budgetMin, budgetMax).alternatives;
   }
 
   return parsed;

@@ -242,24 +242,22 @@ export default function Home() {
             </>
           ) : null}
 
-          {result.evaluation.score <= 7 ? (
-            <>
-              <h3>Better options (1-2)</h3>
-              <div className="cards">
-                {result.evaluation.alternatives.map((alt) => (
-                  <article className="card" key={`${alt.name}-${alt.priceEstimate}`}>
-                    <p className="cardTitle">
-                      {alt.name} <span>{alt.priceEstimate}</span>
-                    </p>
-                    <p>{alt.whyBetter}</p>
-                  </article>
-                ))}
-              </div>
-            </>
+          <h3>Recommended alternatives (1-2)</h3>
+          {result.evaluation.alternatives.length > 0 ? (
+            <div className="cards">
+              {result.evaluation.alternatives.map((alt) => (
+                <article className="card" key={`${alt.name}-${alt.priceEstimate}`}>
+                  <p className="cardTitle">
+                    {alt.name} <span>{alt.priceEstimate}</span>
+                  </p>
+                  <p>{alt.whyBetter}</p>
+                </article>
+              ))}
+            </div>
           ) : (
             <p className="goodNews">
-              This chair already scores in the green range, so no replacement is
-              recommended right now.
+              No direct alternatives were returned. Try adding a budget range for
+              closer matches.
             </p>
           )}
 
