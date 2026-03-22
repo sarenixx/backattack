@@ -53,6 +53,21 @@ Dashboard UI:
 - Auto-refreshes every 8 seconds and shows funnel conversion:
   `analyze_click -> analyze_success -> copy_share_click`
 
+## Health check
+
+Check deployment health and OpenAI config status:
+
+```bash
+curl http://localhost:3000/api/health
+```
+
+Response includes:
+
+- `status` (`ok`)
+- `openaiConfigured` (`true` or `false`)
+- `environment` (for example `production`)
+- `timestamp`
+
 ## Validate
 
 ```bash
